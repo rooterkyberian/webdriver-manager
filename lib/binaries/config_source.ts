@@ -158,6 +158,10 @@ export abstract class GithubApiConfigSource extends JsonConfigSource {
       let options = HttpUtils.initOptions(this.jsonUrl);
       options = HttpUtils.optionsHeader(options, 'Host', 'api.github.com');
       options = HttpUtils.optionsHeader(options, 'User-Agent', 'request');
+      const token = process.env.GITHUB_TOKEN;
+      if (token) {
+          options = HttpUtils.optionsHeader(options, 'Authorization', `token ${token}`);
+      }
 
       let curl = this.getFileName() + ' ' + options.url;
       if (HttpUtils.requestOpts.proxy) {
